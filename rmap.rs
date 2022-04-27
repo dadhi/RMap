@@ -2,68 +2,71 @@
 
 #![allow(dead_code)]
 
-use std::cmp::PartialEq;
-use std::cmp::PartialOrd;
 use std::string::String;
 
 #[derive(Debug)]
 struct RMap<T> {
-    content: T,
+    hash: i32,
+    value: T,
     left: Option<Box<RMap<T>>>,
     right: Option<Box<RMap<T>>>,
 }
 
-impl<T: PartialEq + PartialOrd> RMap<T> {
-    fn new(val: T) -> RMap<T> {
+impl<T: Clone> RMap<T> {
+    fn new(h: i32, v: T) -> RMap<T> {
         RMap {
-            content: val,
+            hash: h,
+            value: v,
             left: None,
             right: None,
         }
     }
 
-    fn add(&mut self, val: T) {
-        if self.content == val {
+    fn add(&mut self, h:i32, v: T) {
+        if self.hash == h {
             return;
-        }; //already exists
-        let update = if val > self.content {
+        };
+
+        let branch = if h > self.hash {
             &mut self.right
         } else {
             &mut self.left
         };
-        match update {
-            Some(update) => update.add(val),                     //dig deeper
-            None => *update = Some(Box::new(RMap::new(val))), //add a leaf
+
+        match branch {
+            Some(branch) => branch.add(h, v),
+            None => *branch = Some(Box::new(RMap::new(h, v))),
         }
     }
 
-    fn search(&self, target: T) -> Option<T> {
-        if target == self.content {
-            Some(target)
+    fn get_value(&self, h: i32) -> Option<T> {
+        if h == self.hash {
+            Some(self.value.clone()) // todo: @wip avoid clone
         }
-        //found
-        else if target < self.content {
-            self.left.as_ref()?.search(target)
-        } else if target > self.content {
-            self.right.as_ref()?.search(target)
+
+        else if h < self.hash {
+            self.left.as_ref()?.get_value(h)
+        } else if h > self.hash {
+            self.right.as_ref()?.get_value(h)
         } else {
             None
-        } //not found
+        }
     }
 }
 
 fn main() {
-    let mut root = RMap::new(5);
-    root.add(7);
-    root.add(3);
+    let mut m1 = RMap::new(5, String::from("foo"));
+    m1.add(7, String::from("bar"));
+    m1.add(3, String::from("baz"));
 
-    println!("{:#?}", root);
+    println!("{:#?}", m1);
 
-    let mut s = RMap::new(String::from("angle"));
-    s.add(String::from("all"));
-    s.add(String::from("bell"));
+    let mut m2 = RMap::new(3, String::from("ay"));
+    m2.add(5, String::from("all"));
+    m2.add(1, String::from("bell"));
 
-    println!("{:#?}", s);
-    let res = s.search(String::from("bell"));
+    println!("{:#?}", m2);
+
+    let res = m2.get_value(1);
     println!("{:#?}", res);
 }
