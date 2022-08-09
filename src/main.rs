@@ -66,6 +66,27 @@ fn calc(expr: &str) -> i32 {
     }
 }
 
+fn main() {
+    println!("fac of 5: {}", fac(10));
+    println!("fib of 5: {}", fib(5));
+    println!("calc of 1 + 3: {}", calc("1 + 3"));
+
+    let mut m1 = RMap::new(5, String::from("foo"));
+    m1.add(7, String::from("bar"));
+    m1.add(3, String::from("baz"));
+
+    println!("{:#?}", m1);
+
+    let mut m2 = RMap::new(3, String::from("ay"));
+    m2.add(5, String::from("all"));
+    m2.add(1, String::from("bell"));
+
+    println!("{:#?}", m2);
+
+    let res = m2.get_value(1);
+    println!("{:#?}", res);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -102,25 +123,4 @@ mod tests {
         assert_eq!(fac(27), 10888869450418352160768000000);
         assert_eq!(fac(28), 304888344611713860501504000000);
     }
-}
-
-fn main() {
-    println!("fac of 5: {}", fac(10));
-    println!("fib of 5: {}", fib(5));
-    println!("calc of 1 + 3: {}", calc("1 + 3"));
-
-    let mut m1 = RMap::new(5, String::from("foo"));
-    m1.add(7, String::from("bar"));
-    m1.add(3, String::from("baz"));
-
-    println!("{:#?}", m1);
-
-    let mut m2 = RMap::new(3, String::from("ay"));
-    m2.add(5, String::from("all"));
-    m2.add(1, String::from("bell"));
-
-    println!("{:#?}", m2);
-
-    let res = m2.get_value(1);
-    println!("{:#?}", res);
 }
