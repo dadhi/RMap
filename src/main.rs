@@ -2,11 +2,11 @@ pub mod rmap;
 
 use crate::rmap::RMap;
 
-fn fac(n: i32) -> i32 {
+fn fac(n: i32) -> i128 {
     if n == 0 {
         1
     } else {
-        n * fac(n - 1)
+        (n as i128) * fac(n - 1)
     }
 }
 
@@ -66,8 +66,46 @@ fn calc(expr: &str) -> i32 {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_fac() {
+        assert_eq!(fac(0), 1);
+        assert_eq!(fac(1), 1);
+        assert_eq!(fac(2), 2);
+        assert_eq!(fac(3), 6);
+        assert_eq!(fac(4), 24);
+        assert_eq!(fac(5), 120);
+        assert_eq!(fac(6), 720);
+        assert_eq!(fac(7), 5040);
+        assert_eq!(fac(8), 40320);
+        assert_eq!(fac(9), 362880);
+        assert_eq!(fac(10), 3628800);
+        assert_eq!(fac(11), 39916800);
+        assert_eq!(fac(12), 479001600);
+        assert_eq!(fac(13), 6227020800);
+        assert_eq!(fac(14), 87178291200);
+        assert_eq!(fac(15), 1307674368000);
+        assert_eq!(fac(16), 20922789888000);
+        assert_eq!(fac(17), 355687428096000);
+        assert_eq!(fac(18), 6402373705728000);
+        assert_eq!(fac(19), 121645100408832000);
+        assert_eq!(fac(20), 2432902008176640000);
+        assert_eq!(fac(21), 51090942171709440000);
+        assert_eq!(fac(22), 1124000727777607680000);
+        assert_eq!(fac(23), 25852016738884976640000);
+        assert_eq!(fac(24), 620448401733239439360000);
+        assert_eq!(fac(25), 15511210043330985984000000);
+        assert_eq!(fac(26), 403291461126605635584000000);
+        assert_eq!(fac(27), 10888869450418352160768000000);
+        assert_eq!(fac(28), 304888344611713860501504000000);
+    }
+}
+
 fn main() {
-    println!("fac of 5: {}", fac(5));
+    println!("fac of 5: {}", fac(10));
     println!("fib of 5: {}", fib(5));
     println!("calc of 1 + 3: {}", calc("1 + 3"));
 
