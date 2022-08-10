@@ -106,6 +106,11 @@ fn lcs(s1: &str, s2: &str) -> String {
     res
 }
 
+// todo: implement Rule 110 in rust
+// fn rule_110() {
+// }
+
+
 #[cfg(test)]
 fn fib_memo(n: i32) -> i32 {
     if (n == 0) || (n == 1) {
@@ -212,5 +217,20 @@ mod tests {
         let mut v = [3, 5, 4, 1, 2];
         insertion_sort(&mut v);
         assert_eq!(v, [1, 2, 3, 4, 5]);
+    }
+
+    #[test]
+    fn manipulate_bits() {
+        let mut byte: u8 = 0b0000_0000;
+
+        byte |= 0b0000_1000; // Set a bit
+        println!("0b{:08b}", byte);
+    
+        byte &= 0b1111_0111; // Unset a bit
+        println!("0b{:08b}", byte);
+    
+        byte ^= 0b0000_1000; // Toggle a bit
+        println!("0b{:08b}", byte);
+
     }
 }
