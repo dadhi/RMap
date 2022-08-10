@@ -232,5 +232,19 @@ mod tests {
         byte ^= 0b0000_1000; // Toggle a bit
         println!("0b{:08b}", byte);
 
+        byte = !byte; // Reverse bits
+        println!("0b{:08b}", byte);
+
+        byte <<= 1; // shift left one bit
+        println!("0b{:08b}", byte);
+    
+        byte >>= 1; // shift right one bit
+        println!("0b{:08b}", byte);
+
+        byte = byte.rotate_left(1); // rotate left one bit
+        println!("0b{:08b}", byte);
+    
+        byte = byte.rotate_right(1); // rotate right one bit
+        println!("0b{:08b}", byte);
     }
 }
