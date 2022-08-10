@@ -83,6 +83,95 @@ fn test_insertion_sort() {
 }
 
 
+// longest common subsequence
+fn lcs(s1: &str, s2: &str) -> String {
+    let mut dp = vec![vec![0; s2.len() + 1]; s1.len() + 1];
+    for i in 1..=s1.len() {
+        for j in 1..=s2.len() {
+            if s1.chars().nth(i - 1).unwrap() == s2.chars().nth(j - 1).unwrap() {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = dp[i - 1][j].max(dp[i][j - 1]);
+            }
+        }
+    }
+    let mut res = String::new();
+    let mut i = s1.len();
+    let mut j = s2.len();
+    while i > 0 && j > 0 {
+        if s1.chars().nth(i - 1).unwrap() == s2.chars().nth(j - 1).unwrap() {
+            res.insert(0, s1.chars().nth(i - 1).unwrap());
+            i -= 1;
+            j -= 1;
+        } else if dp[i - 1][j] > dp[i][j - 1] {
+            i -= 1;
+        } else {
+            j -= 1;
+        }
+    }
+    res
+}
+
+#[test]
+fn test_lcs() {
+    assert_eq!(lcs("abcde", "ace"), "ace");
+    assert_eq!(lcs("abc", "abc"), "abc");
+    assert_eq!(lcs("abc", "def"), "");
+    assert_eq!(lcs("abc", ""), "");
+    assert_eq!(lcs("", "abc"), "");
+    assert_eq!(lcs("", ""), "");
+}
+
+// fibonacci sequence with memoization
+fn fib_memo(n: i32) -> i32 {
+    if (n == 0) || (n == 1) {
+        n
+    } else {
+        let mut dp = vec![0; n as usize + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for i in 2usize..=n as usize {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        dp[n as usize]
+    }
+}
+
+#[test]
+fn test_fib_memo() {
+    assert_eq!(fib_memo(0), 0);
+    assert_eq!(fib_memo(1), 1);
+    assert_eq!(fib_memo(2), 1);
+    assert_eq!(fib_memo(3), 2);
+    assert_eq!(fib_memo(4), 3);
+}
+
+
+fn fib_memo_optimized(n: i32) -> i32 {
+    if (n == 0) || (n == 1) {
+        n
+    } else {
+        let mut n_minus_2 = 0;
+        let mut n_minus_1 = 1;
+        let mut res = 0;
+        for _ in 2usize..=n as usize {
+            res = n_minus_1 + n_minus_2;
+            n_minus_2 = n_minus_1;
+            n_minus_1 = res;
+        }
+        res
+    }
+}
+
+#[test]
+fn test_fib_memo_optimized() {
+    assert_eq!(fib_memo_optimized(0), 0);
+    assert_eq!(fib_memo_optimized(1), 1);
+    assert_eq!(fib_memo_optimized(2), 1);
+    assert_eq!(fib_memo_optimized(3), 2);
+    assert_eq!(fib_memo_optimized(4), 3);
+}
+
 fn main() {
     println!("fac of 5: {}", fac(10));
     println!("fib of 5: {}", fib(5));
