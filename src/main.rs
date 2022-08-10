@@ -303,5 +303,12 @@ mod tests {
         }
 
         assert_eq!(vec![4, 2, 5, 1, 3], preorder_traverse(&root));
+
+        for rr in root.right.as_mut().as_mut() {
+            rr.left = Box::new(Some(RNode::new_leaf(6)));
+            rr.right = Box::new(Some(RNode::new_leaf(7)));
+        }
+
+        assert_eq!(vec![4, 2, 5, 1, 6, 3, 7], preorder_traverse(&root));
     }
 }
