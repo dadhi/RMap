@@ -1,4 +1,4 @@
-pub mod rmap;
+mod rmap;
 
 use crate::rmap::RMap;
 
@@ -110,7 +110,6 @@ fn lcs(s1: &str, s2: &str) -> String {
 // fn rule_110() {
 // }
 
-
 #[cfg(test)]
 fn fib_memo(n: i32) -> i32 {
     if (n == 0) || (n == 1) {
@@ -167,7 +166,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use pretty_assertions::{assert_eq};
+    use pretty_assertions::assert_eq;
 
     #[test]
     fn test_fac() {
@@ -225,10 +224,10 @@ mod tests {
 
         byte |= 0b0000_1000; // Set a bit
         println!("0b{:08b}", byte);
-    
+
         byte &= 0b1111_0111; // Unset a bit
         println!("0b{:08b}", byte);
-    
+
         byte ^= 0b0000_1000; // Toggle a bit
         println!("0b{:08b}", byte);
 
@@ -237,14 +236,62 @@ mod tests {
 
         byte <<= 1; // shift left one bit
         println!("0b{:08b}", byte);
-    
+
         byte >>= 1; // shift right one bit
         println!("0b{:08b}", byte);
 
         byte = byte.rotate_left(1); // rotate left one bit
         println!("0b{:08b}", byte);
-    
+
         byte = byte.rotate_right(1); // rotate right one bit
         println!("0b{:08b}", byte);
+    }
+
+    fn preorder_traverse(root: &RNode) -> Vec<i32> {
+        let mut res = vec![];
+        do_rec(root, &mut res);
+        return res;
+
+        fn do_rec(root: &RNode, res: &mut Vec<i32>) {
+            if let Some(ref left) = *root.left {
+                do_rec(left, res)
+            }
+            res.push(root.val);
+            if let Some(ref right) = *root.right {
+                do_rec(right, res);
+            }
+        }
+    }
+
+    struct RNode {
+        val: i32,
+        left: Box<Option<RNode>>,
+        right: Box<Option<RNode>>,
+    }
+
+    impl RNode {
+        fn new(val: i32) -> Self {
+            RNode {
+                val: val,
+                left: Box::new(None),
+                right: Box::new(None),
+            }
+        }
+    }
+
+    #[test]
+    fn test_preorder_traversal() {
+        let mut root = RNode::new(1);
+        root.left = Box::new(Some(RNode::new(2)));
+        root.right = Box::new(Some(RNode::new(3)));
+
+        assert_eq!(vec![2, 1, 3], preorder_traverse(&root));
+
+        if let Some(ref mut rl) = root.left.as_mut() {
+            rl.left = Box::new(Some(RNode::new(4)));
+            rl.right = Box::new(Some(RNode::new(5)));
+        }
+
+        assert_eq!(vec![4, 2, 5, 1, 3], preorder_traverse(&root));
     }
 }
