@@ -65,6 +65,23 @@ fn calc(expr: &str) -> i32 {
         calc_from(expr.to_owned(), 0, expr.len())
     }
 }
+fn insertion_sort(v: &mut [i32]) {
+    for i in 1..v.len() {
+        let mut j = i;
+        while j > 0 && v[j] < v[j - 1] {
+            v.swap(j, j - 1);
+            j -= 1;
+        }
+    }
+}
+
+#[test]
+fn test_insertion_sort() {
+    let mut v = [3, 5, 4, 1, 2];
+    insertion_sort(&mut v);
+    assert_eq!(v, [1, 2, 3, 4, 5]);
+}
+
 
 fn main() {
     println!("fac of 5: {}", fac(10));
