@@ -75,14 +75,6 @@ fn insertion_sort(v: &mut [i32]) {
     }
 }
 
-#[test]
-fn test_insertion_sort() {
-    let mut v = [3, 5, 4, 1, 2];
-    insertion_sort(&mut v);
-    assert_eq!(v, [1, 2, 3, 4, 5]);
-}
-
-
 // longest common subsequence
 fn lcs(s1: &str, s2: &str) -> String {
     let mut dp = vec![vec![0; s2.len() + 1]; s1.len() + 1];
@@ -112,16 +104,6 @@ fn lcs(s1: &str, s2: &str) -> String {
     res
 }
 
-#[test]
-fn test_lcs() {
-    assert_eq!(lcs("abcde", "ace"), "ace");
-    assert_eq!(lcs("abc", "abc"), "abc");
-    assert_eq!(lcs("abc", "def"), "");
-    assert_eq!(lcs("abc", ""), "");
-    assert_eq!(lcs("", "abc"), "");
-    assert_eq!(lcs("", ""), "");
-}
-
 // fibonacci sequence with memoization
 fn fib_memo(n: i32) -> i32 {
     if (n == 0) || (n == 1) {
@@ -137,16 +119,6 @@ fn fib_memo(n: i32) -> i32 {
     }
 }
 
-#[test]
-fn test_fib_memo() {
-    assert_eq!(fib_memo(0), 0);
-    assert_eq!(fib_memo(1), 1);
-    assert_eq!(fib_memo(2), 1);
-    assert_eq!(fib_memo(3), 2);
-    assert_eq!(fib_memo(4), 3);
-}
-
-
 fn fib_memo_optimized(n: i32) -> i32 {
     if (n == 0) || (n == 1) {
         n
@@ -161,15 +133,6 @@ fn fib_memo_optimized(n: i32) -> i32 {
         }
         res
     }
-}
-
-#[test]
-fn test_fib_memo_optimized() {
-    assert_eq!(fib_memo_optimized(0), 0);
-    assert_eq!(fib_memo_optimized(1), 1);
-    assert_eq!(fib_memo_optimized(2), 1);
-    assert_eq!(fib_memo_optimized(3), 2);
-    assert_eq!(fib_memo_optimized(4), 3);
 }
 
 fn main() {
@@ -196,29 +159,12 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use pretty_assertions::{assert_eq};
 
     #[test]
     fn test_fac() {
         assert_eq!(fac(0), 1);
         assert_eq!(fac(1), 1);
-        assert_eq!(fac(2), 2);
-        assert_eq!(fac(3), 6);
-        assert_eq!(fac(4), 24);
-        assert_eq!(fac(5), 120);
-        assert_eq!(fac(6), 720);
-        assert_eq!(fac(7), 5040);
-        assert_eq!(fac(8), 40320);
-        assert_eq!(fac(9), 362880);
-        assert_eq!(fac(10), 3628800);
-        assert_eq!(fac(11), 39916800);
-        assert_eq!(fac(12), 479001600);
-        assert_eq!(fac(13), 6227020800);
-        assert_eq!(fac(14), 87178291200);
-        assert_eq!(fac(15), 1307674368000);
-        assert_eq!(fac(16), 20922789888000);
-        assert_eq!(fac(17), 355687428096000);
-        assert_eq!(fac(18), 6402373705728000);
-        assert_eq!(fac(19), 121645100408832000);
         assert_eq!(fac(20), 2432902008176640000);
         assert_eq!(fac(21), 51090942171709440000);
         assert_eq!(fac(22), 1124000727777607680000);
@@ -228,5 +174,40 @@ mod tests {
         assert_eq!(fac(26), 403291461126605635584000000);
         assert_eq!(fac(27), 10888869450418352160768000000);
         assert_eq!(fac(28), 304888344611713860501504000000);
+    }
+
+    #[test]
+    fn test_fib_memo_optimized() {
+        assert_eq!(fib_memo_optimized(0), 0);
+        assert_eq!(fib_memo_optimized(1), 1);
+        assert_eq!(fib_memo_optimized(2), 1);
+        assert_eq!(fib_memo_optimized(3), 2);
+        assert_eq!(fib_memo_optimized(4), 3);
+    }
+
+    #[test]
+    fn test_fib_memo() {
+        assert_eq!(fib_memo(0), 0);
+        assert_eq!(fib_memo(1), 1);
+        assert_eq!(fib_memo(2), 1);
+        assert_eq!(fib_memo(3), 2);
+        assert_eq!(fib_memo(4), 3);
+    }
+
+    #[test]
+    fn test_lcs() {
+        assert_eq!(lcs("abcde", "ace"), "ace");
+        assert_eq!(lcs("abc", "abc"), "abc");
+        assert_eq!(lcs("abc", "def"), "");
+        assert_eq!(lcs("abc", ""), "");
+        assert_eq!(lcs("", "abc"), "");
+        assert_eq!(lcs("", ""), "");
+    }
+
+    #[test]
+    fn test_insertion_sort() {
+        let mut v = [3, 5, 4, 1, 2];
+        insertion_sort(&mut v);
+        assert_eq!(v, [1, 2, 3, 4, 5]);
     }
 }
