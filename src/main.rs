@@ -65,6 +65,8 @@ fn calc(expr: &str) -> i32 {
         calc_from(expr.to_owned(), 0, expr.len())
     }
 }
+
+#[cfg(test)]
 fn insertion_sort(v: &mut [i32]) {
     for i in 1..v.len() {
         let mut j = i;
@@ -75,7 +77,7 @@ fn insertion_sort(v: &mut [i32]) {
     }
 }
 
-// longest common subsequence
+#[cfg(test)]
 fn lcs(s1: &str, s2: &str) -> String {
     let mut dp = vec![vec![0; s2.len() + 1]; s1.len() + 1];
     for i in 1..=s1.len() {
@@ -104,7 +106,7 @@ fn lcs(s1: &str, s2: &str) -> String {
     res
 }
 
-// fibonacci sequence with memoization
+#[cfg(test)]
 fn fib_memo(n: i32) -> i32 {
     if (n == 0) || (n == 1) {
         n
@@ -119,6 +121,7 @@ fn fib_memo(n: i32) -> i32 {
     }
 }
 
+#[cfg(test)]
 fn fib_memo_optimized(n: i32) -> i32 {
     if (n == 0) || (n == 1) {
         n
