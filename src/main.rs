@@ -270,26 +270,36 @@ mod tests {
     }
 
     impl RNode {
-        fn new(val: i32) -> Self {
+        fn new_leaf(val: i32) -> Self {
             RNode {
                 val: val,
                 left: Box::new(None),
                 right: Box::new(None),
             }
         }
+
+        fn new_tree(val: i32, left: Option<RNode>, right: Option<RNode>) -> Self {
+            RNode {
+                val: val,
+                left: Box::new(left),
+                right: Box::new(right),
+            }
+        }
     }
 
     #[test]
     fn test_preorder_traversal() {
-        let mut root = RNode::new(1);
-        root.left = Box::new(Some(RNode::new(2)));
-        root.right = Box::new(Some(RNode::new(3)));
+
+        let mut root = RNode::new_tree(
+            1, 
+            Some(RNode::new_leaf(2)), 
+            Some(RNode::new_leaf(3)));
 
         assert_eq!(vec![2, 1, 3], preorder_traverse(&root));
 
         if let Some(ref mut rl) = root.left.as_mut() {
-            rl.left = Box::new(Some(RNode::new(4)));
-            rl.right = Box::new(Some(RNode::new(5)));
+            rl.left = Box::new(Some(RNode::new_leaf(4)));
+            rl.right = Box::new(Some(RNode::new_leaf(5)));
         }
 
         assert_eq!(vec![4, 2, 5, 1, 3], preorder_traverse(&root));
