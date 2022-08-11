@@ -164,9 +164,8 @@ fn main() {
 }
 
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use super::*;
-    use pretty_assertions::assert_eq;
 
     #[test]
     fn test_fac() {
@@ -289,11 +288,7 @@ mod tests {
 
     #[test]
     fn test_preorder_traversal() {
-
-        let mut root = RNode::new_tree(
-            1, 
-            Some(RNode::new_leaf(2)), 
-            Some(RNode::new_leaf(3)));
+        let mut root = RNode::new_tree(1, Some(RNode::new_leaf(2)), Some(RNode::new_leaf(3)));
 
         assert_eq!(vec![2, 1, 3], preorder_traverse(&root));
 
@@ -311,4 +306,53 @@ mod tests {
 
         assert_eq!(vec![4, 2, 5, 1, 6, 3, 7], preorder_traverse(&root));
     }
+
+    // linked list implementation
+    // omg, null pointer optimizing enum - basically Empty case is represented as 0 without need for tag,
+    // because the only other case is always not null, because it contains a non-zero pointer.
+    struct ListNode {
+        elem: i32,
+        next: Option<Box<ListNode>>,
+    }
+    
+    // single field struct is zero-cost abstraction
+    pub struct List {
+        head: Option<Box<ListNode>>,
+    }
+
+    impl List {
+        pub fn new() -> Self {
+            List { head: None }
+        }
+
+        pub fn push(&mut self, elem: i32) {
+            let new_node = Box::new(ListNode {
+                elem,
+                next: self.head.take(),
+            });
+            self.head = Some(new_node);
+        }
+
+        pub fn pop(&mut self) -> Option<i32> {
+            self.head.take().map(|node| {
+                self.head = node.next;
+                node.elem
+            })
+        }
+    }
+
+    #[test]
+    fn test_linked_list() {
+        let mut list = List::new();
+        assert_eq!(None, list.pop());
+
+        list.push(42);
+        assert_eq!(Some(42), list.pop());
+
+        list.push(13);
+        list.push(14);
+        assert_eq!(Some(14), list.pop());
+        assert_eq!(Some(13), list.pop());
+    }
+
 }
