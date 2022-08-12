@@ -26,11 +26,12 @@ fn rule_110() -> Result<()> {
     let mut cells: usize = 0;
     cells |= 1 << 31; // init the last cell with 1
 
+    let mut line_num: [u8; 3] = [0, 0, SPACE];
 
-    for d1 in 0..3 {
-        for d0 in 0..10 {
-            
-            stdout.write(&[DIGITS[d1], DIGITS[d0], SPACE])?; // todo: @perf reuse the array
+    for d0 in 0..3 {
+        for d1 in 0..10 {
+            (line_num[0], line_num[1]) = (DIGITS[d0], DIGITS[d1]);
+            stdout.write(&line_num)?;
 
             stdout.write(SYMBOLS[cells & 1])?;
             stdout.write(SYMBOLS[(cells >> 1) & 1])?;
