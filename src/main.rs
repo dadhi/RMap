@@ -23,7 +23,7 @@ fn rule_110() -> Result<()> {
     
     stdout.write(b"## RULE-110 premier. 110 in binary representation is 01101110:\n");
 
-    let mut cells: u32 = 0;
+    let mut cells: usize = 0;
     cells |= 1 << 31; // init the last cell with 1
 
 
@@ -32,13 +32,13 @@ fn rule_110() -> Result<()> {
             
             stdout.write(&[DIGITS[d1], DIGITS[d0], SPACE])?; // todo: @perf reuse the array
 
-            stdout.write(SYMBOLS[(cells & 1) as usize])?; // todo: @perf get rid of usize
-            stdout.write(SYMBOLS[((cells >> 1) & 1) as usize])?;
+            stdout.write(SYMBOLS[cells & 1])?;
+            stdout.write(SYMBOLS[(cells >> 1) & 1])?;
 
             let mut pattern = ((cells & 1) << 1) | ((cells >> 1) & 1);
 
             for i in 2..32 {
-                stdout.write(SYMBOLS[((cells >> i) & 1) as usize])?;
+                stdout.write(SYMBOLS[(cells >> i) & 1])?;
 
                 pattern = (pattern << 1 | ((cells >> i) & 1)) & 0b0000_0111; // keep pattern as 3 lower bits, 000, 001, 010, 011, etc.
 
