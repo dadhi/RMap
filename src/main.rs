@@ -15,28 +15,25 @@ fn rule_110() -> Result<()> {
     let stdout = io::stdout();
     let mut stdout = stdout.lock();
 
-    // const GEN_SIZE: usize = 30;
-    const SYMBOLS: [&[u8; 1]; 2] = [b"-", b"+"];
+    const SYMBOLS: [&[u8; 1]; 2] = [b"-", b"#"];
+    const SYMBOLS_01: [&[u8; 2]; 4] = [b"--", b"-#", b"#-", b"##"];
     const D: u8 = 48;
     const DIGITS: [u8; 10] = [D+0, D+1, D+2, D+3, D+4, D+5, D+6, D+7, D+8, D+9];
     const SPACE: u8 = 32;
     
     stdout.write(b"## RULE-110 premier. 110 in binary representation is 01101110:\n");
 
-    let mut cells: usize = 0;
-    cells |= 1 << 31; // init the last cell with 1
+    let mut cells: usize = 1 << 31; // init the last cell with 1
 
-    let mut line_num: [u8; 3] = [0, 0, SPACE];
+    let mut gen_num: [u8; 3] = [0, 0, SPACE]; // the buffer to store and output the generation number
 
     for d0 in 0..3 {
         for d1 in 0..10 {
-            (line_num[0], line_num[1]) = (DIGITS[d0], DIGITS[d1]);
-            stdout.write(&line_num)?;
-
-            stdout.write(SYMBOLS[cells & 1])?;
-            stdout.write(SYMBOLS[(cells >> 1) & 1])?;
+            (gen_num[0], gen_num[1]) = (DIGITS[d0], DIGITS[d1]);
+            stdout.write(&gen_num)?;
 
             let mut pattern = ((cells & 1) << 1) | ((cells >> 1) & 1);
+            stdout.write(SYMBOLS_01[pattern])?; // todo: @perf funny that we may just replace it with b"--" for 30 gens, cause it is always will be "--"
 
             for i in 2..32 {
                 stdout.write(SYMBOLS[(cells >> i) & 1])?;
@@ -45,11 +42,11 @@ fn rule_110() -> Result<()> {
 
                 // clear i - 1 bit first
                 cells &= !(1 << (i - 1));
-                // convert to index in binary representation of 110, and set i - 1 bit
+                // get pattern's bit in 110 (in its binary form 0b_0110_1110) and set to it the i - 1 bit in cells
                 cells |= ((110 >> pattern) & 1) << (i - 1);
 
             }
-            // stdout new line
+
             stdout.write(b"\n")?;
         }
     }
