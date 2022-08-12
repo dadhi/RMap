@@ -9,36 +9,46 @@ fn main() {
     rule_110();
 }
 
-fn rule_110() {
-    use std::io::{self, Write};
+use std::io::{self, Write, Result};
 
-    println!("## RULE-110 premier:");
-    const GEN_SIZE: usize = 30;
-    const SYMBOLS: [&str; 2] = ["-", "+"];
-    const STR: &[u8; 2] = b"-+";
-
-    let mut gen = [0u8; GEN_SIZE];
-
+fn rule_110() -> Result<()> {
     let stdout = io::stdout();
     let mut stdout = stdout.lock();
-    for n in 0..GEN_SIZE {
-        // usize to str
 
-        stdout.write(&n.to_string().as_bytes()); // @perf remove heap alloc with numtoa crate
-        stdout.write(b" ");
-        stdout.write(STR);
-        //print!("{}", SYMBOLS[gen[0] as usize]);
-        let mut pattern = gen[0] << 1 | gen[1];
-        for i in 2..GEN_SIZE {
-            pattern = (pattern << 1 | gen[i]) & 3; // keep pattern as 3 lower bits, 000, 001, 010, 011, etc.
-            gen[i - 1] = (110 >> pattern) & 1; // convert to index in binary representation of 110, and find set bit
+    const GEN_SIZE: usize = 30;
+    const SYMBOLS: [&[u8; 1]; 2] = [b"-", b"+"];
+    const D: u8 = 48;
+    const DIGITS: [u8; 10] = [D+0, D+1, D+2, D+3, D+4, D+5, D+6, D+7, D+8, D+9];
+    const SPACE: u8 = 32;
+    
+    stdout.write(b"## RULE-110 premier. 110 in binary representation is 01101110:\n");
+
+    let mut cells = [0u8; GEN_SIZE];
+    cells[cells.len() - 1] = 1; // init the last cell with 1
+    cells[0] = 1; // init the last cell with 1
+
+    for d1 in 0..4 {
+        for d0 in 0..10 {
+            
+            stdout.write(&[DIGITS[d1], DIGITS[d0], SPACE])?;
+
+            stdout.write(SYMBOLS[cells[0] as usize])?;
+            stdout.write(SYMBOLS[cells[1] as usize])?;
+
+            let mut pattern = cells[0] << 1 | cells[1];
+
+            for i in 2..GEN_SIZE {
+                stdout.write(SYMBOLS[cells[i] as usize])?;
+
+                pattern = (pattern << 1 | cells[i]) & 0b0000_0111; // keep pattern as 3 lower bits, 000, 001, 010, 011, etc.
+                cells[i - 1] = (110 >> pattern) & 1; // convert to index in binary representation of 110, and find set bit
+            }
+            // stdout new line
+            stdout.write(b"\n")?;
         }
-        // stdout new line
-        stdout.write(b"\n");
     }
-    stdout.flush();
-
-    println!();
+    stdout.flush()?;
+    Ok(())
 }
 
 fn play_with_rmap() {
