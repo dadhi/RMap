@@ -30,9 +30,9 @@ fn rule_110() -> Result<()> {
     for d1 in 0..3 {
         for d0 in 0..10 {
             
-            stdout.write(&[DIGITS[d1], DIGITS[d0], SPACE])?;
+            stdout.write(&[DIGITS[d1], DIGITS[d0], SPACE])?; // todo: @perf reuse the array
 
-            stdout.write(SYMBOLS[(cells & 1) as usize])?; // @perf get rid of usize
+            stdout.write(SYMBOLS[(cells & 1) as usize])?; // todo: @perf get rid of usize
             stdout.write(SYMBOLS[((cells >> 1) & 1) as usize])?;
 
             let mut pattern = ((cells & 1) << 1) | ((cells >> 1) & 1);
