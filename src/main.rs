@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+#![allow(unused)]
 
 pub mod rmap;
 mod samples;
@@ -10,16 +10,36 @@ fn main() {
 }
 
 fn rule_110() {
-    println!("## RULE-110 premier:");
+    use std::io::{self, Write};
 
+    println!("## RULE-110 premier:");
     const GEN_SIZE: usize = 30;
-    for _ in 0..GEN_SIZE {
-        print!("-");
+    const SYMBOLS: [&str; 2] = ["-", "+"];
+    const STR: &[u8; 2] = b"-+";
+
+    let mut gen = [0u8; GEN_SIZE];
+
+    let stdout = io::stdout();
+    let mut stdout = stdout.lock();
+    for n in 0..GEN_SIZE {
+        // usize to str
+
+        stdout.write(&n.to_string().as_bytes()); // @perf remove heap alloc with numtoa crate
+        stdout.write(b" ");
+        stdout.write(STR);
+        //print!("{}", SYMBOLS[gen[0] as usize]);
+        let mut pattern = gen[0] << 1 | gen[1];
+        for i in 2..GEN_SIZE {
+            pattern = (pattern << 1 | gen[i]) & 3; // keep pattern as 3 lower bits, 000, 001, 010, 011, etc.
+            gen[i - 1] = (110 >> pattern) & 1; // convert to index in binary representation of 110, and find set bit
+        }
+        // stdout new line
+        stdout.write(b"\n");
     }
-    print!("*");
+    stdout.flush();
+
     println!();
 }
-
 
 fn play_with_rmap() {
     let mut m1 = RMap::new(5, String::from("foo"));
@@ -33,4 +53,3 @@ fn play_with_rmap() {
     let res = m2.get_value(1);
     println!("{:#?}", res);
 }
-
