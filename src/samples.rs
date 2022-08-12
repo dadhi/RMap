@@ -287,22 +287,22 @@ pub mod tests {
     // linked list implementation
     // omg, null pointer optimizing enum - basically Empty case is represented as 0 without need for tag,
     // because the only other case is always not null, because it contains a non-zero pointer.
-    struct ListNode {
-        elem: i32,
-        next: Option<Box<ListNode>>,
+    struct ListNode<T> {
+        elem: T,
+        next: Option<Box<ListNode<T>>>,
     }
 
     // single field struct is zero-cost abstraction
-    pub struct List {
-        head: Option<Box<ListNode>>,
+    pub struct List<T> {
+        head: Option<Box<ListNode<T>>>,
     }
 
-    impl List {
+    impl<T> List<T> {
         pub fn new() -> Self {
-            List { head: None }
+            Self { head: None }
         }
 
-        pub fn push(&mut self, elem: i32) {
+        pub fn push(&mut self, elem: T) {
             let new_node = Box::new(ListNode {
                 elem,
                 next: self.head.take(),
@@ -310,7 +310,7 @@ pub mod tests {
             self.head = Some(new_node);
         }
 
-        pub fn pop(&mut self) -> Option<i32> {
+        pub fn pop(&mut self) -> Option<T> {
             self.head.take().map(|node| {
                 self.head = node.next;
                 node.elem
@@ -320,7 +320,7 @@ pub mod tests {
 
     #[test]
     fn test_linked_list() {
-        let mut list = List::new();
+        let mut list = List::<i32>::new();
         assert_eq!(None, list.pop());
 
         list.push(42);
