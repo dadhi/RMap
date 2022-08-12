@@ -320,6 +320,10 @@ pub mod tests {
         pub fn peek(&self) -> Option<&T> {
             self.head.as_ref().map(|node| &node.elem)
         }
+
+        pub fn peek_mut(&mut self) -> Option<&mut T> {
+            self.head.as_mut().map(|node| &mut node.elem)
+        }
     }
 
     #[test]
@@ -340,5 +344,15 @@ pub mod tests {
         list.push(42);
         assert_eq!(Some(&42), list.peek());
         assert_eq!(Some(42), list.pop());
+
+        // test peek_mut
+        list.push(42);
+        let res = list.peek_mut().map(|v| {
+            let res = *v; // todo: @improve
+            *v = 43;
+            res
+        });
+        assert_eq!(Some(42), res);
+        assert_eq!(Some(&43), list.peek());
     }
 }
