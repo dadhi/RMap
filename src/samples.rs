@@ -316,6 +316,10 @@ pub mod tests {
                 node.elem
             })
         }
+
+        pub fn peek(&self) -> Option<&T> {
+            self.head.as_ref().map(|node| &node.elem)
+        }
     }
 
     #[test]
@@ -325,10 +329,16 @@ pub mod tests {
 
         list.push(42);
         assert_eq!(Some(42), list.pop());
+        assert_eq!(None, list.pop());
 
         list.push(13);
         list.push(14);
         assert_eq!(Some(14), list.pop());
         assert_eq!(Some(13), list.pop());
+        assert_eq!(None, list.pop());
+
+        list.push(42);
+        assert_eq!(Some(&42), list.peek());
+        assert_eq!(Some(42), list.pop());
     }
 }
