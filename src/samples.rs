@@ -284,26 +284,26 @@ pub mod tests {
         assert_eq!(vec![4, 2, 5, 1, 6, 3, 7], preorder_traverse(&root));
     }
 
-    // linked list implementation
-    // omg, null pointer optimizing enum - basically Empty case is represented as 0 without need for tag,
+    // ## Stack as a mutable linked list implementation
+    // Omg, null pointer optimizing enum - basically Empty case is represented as 0 without need for tag,
     // because the only other case is always not null, because it contains a non-zero pointer.
-    struct ListNode<T> {
+    struct StackNode<T> {
         elem: T,
-        next: Option<Box<ListNode<T>>>,
+        next: Option<Box<StackNode<T>>>,
     }
 
     // single field struct is zero-cost abstraction
-    pub struct List<T> {
-        head: Option<Box<ListNode<T>>>,
+    pub struct Stack<T> {
+        head: Option<Box<StackNode<T>>>,
     }
 
-    impl<T> List<T> {
+    impl<T> Stack<T> {
         pub fn new() -> Self {
             Self { head: None }
         }
 
         pub fn push(&mut self, elem: T) {
-            let new_node = Box::new(ListNode {
+            let new_node = Box::new(StackNode {
                 elem,
                 next: self.head.take(),
             });
@@ -324,35 +324,66 @@ pub mod tests {
         pub fn peek_mut(&mut self) -> Option<&mut T> {
             self.head.as_mut().map(|node| &mut node.elem)
         }
+
+        pub fn is_empty(&self) -> bool {
+            self.head.is_none()
+        }
+
+        pub fn into_iter(self) -> IntoIter<T> {
+            IntoIter(self)
+        }
+    }
+
+    pub struct IntoIter<T>(Stack<T>);
+
+    impl<T> Iterator<> for IntoIter<T> {
+        type Item = T;
+        fn next(&mut self) -> Option<Self::Item> {
+            self.0.pop()
+        }
     }
 
     #[test]
-    fn test_linked_list() {
-        let mut list = List::<i32>::new();
-        assert_eq!(None, list.pop());
+    fn test_linked_stack() {
+        let mut s = Stack::<i32>::new();
+        assert_eq!(None, s.pop());
 
-        list.push(42);
-        assert_eq!(Some(42), list.pop());
-        assert_eq!(None, list.pop());
+        s.push(42);
+        assert_eq!(Some(42), s.pop());
+        assert_eq!(None, s.pop());
 
-        list.push(13);
-        list.push(14);
-        assert_eq!(Some(14), list.pop());
-        assert_eq!(Some(13), list.pop());
-        assert_eq!(None, list.pop());
+        s.push(13);
+        s.push(14);
+        assert_eq!(Some(14), s.pop());
+        assert_eq!(Some(13), s.pop());
+        assert_eq!(None, s.pop());
 
-        list.push(42);
-        assert_eq!(Some(&42), list.peek());
-        assert_eq!(Some(42), list.pop());
+        s.push(42);
+        assert_eq!(Some(&42), s.peek());
+        assert_eq!(Some(42), s.pop());
 
         // test peek_mut
-        list.push(42);
-        let res = list.peek_mut().map(|v| {
+        s.push(42);
+        let res = s.peek_mut().map(|v| {
             let res = *v; // todo: @improve
             *v = 43;
             res
         });
         assert_eq!(Some(42), res);
-        assert_eq!(Some(&43), list.peek());
+        assert_eq!(Some(&43), s.peek());
+    }
+
+    //test into_iter
+    #[test]
+    fn test_into_iter_as_it_is_basically_reverse() {
+        let mut s = Stack::<i32>::new();
+        s.push(1);
+        s.push(2);
+        s.push(3);
+        s.push(4);
+
+        let vec = s.into_iter().map(|x| x + 1).collect::<Vec<_>>();
+
+        assert_eq!(vec![5, 4, 3, 2], vec);
     }
 }
