@@ -18,20 +18,21 @@ fn rule_110() -> Result<()> {
     const SYMBOLS: [&[u8; 1]; 2] = [b"-", b"#"];
     const SYMBOLS_01: [&[u8; 2]; 4] = [b"--", b"-#", b"#-", b"##"];
     const DIGITS: [u8; 10] = [b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9'];
-    const SPACE: u8 = b' ';
     
     stdout.write(b"## RULE-110 premier. 110 in binary representation is 01101110:\n");
 
     let mut cells: usize = 1 << 31; // init the last cell with 1
 
-    let mut gen_num: [u8; 3] = [0, 0, SPACE]; // the buffer to store and output the generation number
+    let mut gen_num: [u8; 3] = [0, 0, b' ']; // the buffer to store and output the generation number
 
     for d0 in 0..3 {
         for d1 in 0..10 {
             (gen_num[0], gen_num[1]) = (DIGITS[d0], DIGITS[d1]);
             stdout.write(&gen_num)?;
 
-            let mut pattern = ((cells & 1) << 1) | ((cells >> 1) & 1);
+
+            let mut pattern = (cells & 3) << 1;
+
             stdout.write(SYMBOLS_01[pattern])?; // todo: @perf funny that we may just replace it with b"--" for 30 gens, cause it is always will be "--"
 
             for i in 2..32 {
