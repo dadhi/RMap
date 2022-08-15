@@ -30,8 +30,9 @@ fn rule_110() -> Result<()> {
             (gen_num[0], gen_num[1]) = (DIGITS[d0], DIGITS[d1]);
             stdout.write(&gen_num)?;
 
-
-            let mut pattern = (cells & 3) << 1;
+            // todo: @incomplete check that we don't need to rotate bits
+            // let mut pattern = (cells & 3) << 1;
+            let mut pattern = ((cells & 1) << 1) | ((cells >> 1) & 1);
 
             stdout.write(SYMBOLS_01[pattern])?; // todo: @perf funny that we may just replace it with b"--" for 30 gens, cause it is always will be "--"
 

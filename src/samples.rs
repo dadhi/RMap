@@ -216,11 +216,12 @@ pub mod tests {
         byte >>= 1; // shift right one bit
         println!("0b{:08b}", byte);
 
-        byte = byte.rotate_left(1); // rotate left one bit
-        println!("0b{:08b}", byte);
+        let mut rotated = byte.rotate_left(1);
+        println!("rotate left by 1: 0b{:08b} -> 0b{:08b}", byte, rotated);
 
-        byte = byte.rotate_right(1); // rotate right one bit
-        println!("0b{:08b}", byte);
+        rotated = byte.rotate_right(1);
+        println!("rotate right by 1: 0b{:08b} -> 0b{:08b}", byte, rotated);
+
     }
 
     struct RNode {
