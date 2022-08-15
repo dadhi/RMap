@@ -17,9 +17,8 @@ fn rule_110() -> Result<()> {
 
     const SYMBOLS: [&[u8; 1]; 2] = [b"-", b"#"];
     const SYMBOLS_01: [&[u8; 2]; 4] = [b"--", b"-#", b"#-", b"##"];
-    const D: u8 = 48;
-    const DIGITS: [u8; 10] = [D+0, D+1, D+2, D+3, D+4, D+5, D+6, D+7, D+8, D+9];
-    const SPACE: u8 = 32;
+    const DIGITS: [u8; 10] = [b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9'];
+    const SPACE: u8 = b' ';
     
     stdout.write(b"## RULE-110 premier. 110 in binary representation is 01101110:\n");
 
