@@ -1,5 +1,22 @@
 #[cfg(test)]
 pub mod tests {
+
+    const EMPTY_I32: &[i32] = &[];
+
+    /// Problem 5: Reverse a list
+    fn reverse<T : Clone>(xs: Vec<T>) -> Vec<T> {
+        let mut result = Vec::with_capacity(xs.len());
+        for i in (0..xs.len()).rev() {
+            result.push(xs[i].clone());
+        }
+        result
+    }
+
+    #[test]
+    fn test_reverse() {
+        assert_eq!(reverse(vec![1, 2, 3]), vec![3, 2, 1]);
+    }
+
     /// Problem 4: Length of a list
     fn p4_length<T>(xs: &[T]) -> usize {
         fn length_rec<T>(xs: &[T], len: usize) -> usize {
@@ -14,7 +31,7 @@ pub mod tests {
     #[test]
     fn test_p4_length() {
         assert_eq!(p4_length(&[1, 2, 3, 4, 5]), 5);
-        assert_eq!(p4_length(&[] as &[i32]), 0);
+        assert_eq!(p4_length(EMPTY_I32), 0);
     }
 
     /// Problem 3: N'th element of a list
@@ -31,7 +48,7 @@ pub mod tests {
         let list = [1, 2, 3, 4, 5];
         assert_eq!(p3_nth(&list, 2), Some(&3));
         assert_eq!(p3_nth(&list, 5), None);
-        assert_eq!(p3_nth(&[] as &[i32], 0), None);
+        assert_eq!(p3_nth(EMPTY_I32, 0), None);
     }
 
     /// Problem 2: Last two elements of a list
@@ -48,7 +65,7 @@ pub mod tests {
         assert_eq!(p2_last_two(&[1, 2, 3, 4]), Some((&3, &4)));
         assert_eq!(p2_last_two(&[1, 4]), Some((&1, &4)));
         assert_eq!(p2_last_two(&[1]), None);
-        assert_eq!(p2_last_two(&[] as &[i32]), None);
+        assert_eq!(p2_last_two(EMPTY_I32), None);
     }
 
     /// Problem 1: Write a function last : 'a list -> 'a option that returns the last element of a list
@@ -64,6 +81,6 @@ pub mod tests {
     fn test_p1_last() {
         assert_eq!(p2_last(&[1, 2, 3, 4]), Some(&4));
         assert_eq!(p2_last(&[1]), Some(&1));
-        assert_eq!(p2_last(&[] as &[i32]), None);
+        assert_eq!(p2_last(EMPTY_I32), None);
     }
 }
