@@ -6,8 +6,10 @@ pub mod tests {
     /// Problem 5: Reverse a list
     fn reverse<T>(xs: &mut [T]) {
         match xs {
-            [] => {}
-            [x] => {}
+            [] | [_] => {}
+            [a, b] | [a, _, b] => {
+                xs.swap(0, xs.len() - 1);
+            }
             [_, ..] => {
                 let len = xs.len();
                 let mid = len / 2;
@@ -20,9 +22,9 @@ pub mod tests {
 
     #[test]
     fn test_reverse() {
-        let mut xs = [1, 2, 3, 4, 5];
+        let mut xs = [1, 2, 3];
         reverse(&mut xs);
-        assert_eq!(xs, [5, 4, 3, 2, 1]);
+        assert_eq!(xs, [3, 2, 1]);
     }
 
     /// Problem 4: Length of a list
