@@ -1,13 +1,17 @@
 #[cfg(test)]
 pub mod tests {
     /// Problem 4: Length of a list
-    fn length<T>(list: &[T]) -> usize {
-        list.len()
+    fn p4_length<T>(xs: &[T]) -> usize {
+        match xs {
+            [] => 0,
+            [_, tail @ ..] => 1 + p4_length(tail),
+        }
     }
 
     #[test]
-    fn test_length() {
-        assert_eq!(length(&[1, 2, 3, 4, 5]), 5);
+    fn test_p4_length() {
+        assert_eq!(p4_length(&[1, 2, 3, 4, 5]), 5);
+        assert_eq!(p4_length(&[] as &[i32]), 0);
     }
 
     /// Problem 3: N'th element of a list
