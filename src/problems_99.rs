@@ -1,11 +1,11 @@
 #[cfg(test)]
 pub mod tests {
     /// Problem 3: N'th element of a list
-    fn p3_nth<T>(list: &[T], n: usize) -> Option<&T> {
-        if n < list.len() {
-            Some(&list[n])
-        } else {
-            None
+    fn p3_nth<T>(xs: &[T], n: usize) -> Option<&T> {
+        match xs {
+            [] => None,
+            [x, ..] if n == 0 => Some(x),
+            [_, xs @ ..] => p3_nth(xs, n - 1),
         }
     }
 
@@ -14,6 +14,7 @@ pub mod tests {
         let list = [1, 2, 3, 4, 5];
         assert_eq!(p3_nth(&list, 2), Some(&3));
         assert_eq!(p3_nth(&list, 5), None);
+        assert_eq!(p3_nth(&[] as &[i32], 0), None);
     }
 
     /// Problem 2: Last two elements of a list
