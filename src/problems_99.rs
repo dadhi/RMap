@@ -1,5 +1,15 @@
 #[cfg(test)]
 pub mod tests {
+    /// Problem 4: Length of a list
+    fn length<T>(list: &[T]) -> usize {
+        list.len()
+    }
+
+    #[test]
+    fn test_length() {
+        assert_eq!(length(&[1, 2, 3, 4, 5]), 5);
+    }
+
     /// Problem 3: N'th element of a list
     fn p3_nth<T>(xs: &[T], n: usize) -> Option<&T> {
         match xs {
