@@ -4,17 +4,25 @@ pub mod tests {
     const EMPTY_I32: &[i32] = &[];
 
     /// Problem 5: Reverse a list
-    fn reverse<T : Clone>(xs: Vec<T>) -> Vec<T> {
-        let mut result = Vec::with_capacity(xs.len());
-        for i in (0..xs.len()).rev() {
-            result.push(xs[i].clone());
+    fn reverse<T>(xs: &mut [T]) {
+        match xs {
+            [] => {}
+            [x] => {}
+            [_, ..] => {
+                let len = xs.len();
+                let mid = len / 2;
+                for i in 0..mid {
+                    xs.swap(i, len - i - 1);
+                }
+            }
         }
-        result
     }
 
     #[test]
     fn test_reverse() {
-        assert_eq!(reverse(vec![1, 2, 3]), vec![3, 2, 1]);
+        let mut xs = [1, 2, 3, 4, 5];
+        reverse(&mut xs);
+        assert_eq!(xs, [5, 4, 3, 2, 1]);
     }
 
     /// Problem 4: Length of a list
