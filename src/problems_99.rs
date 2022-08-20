@@ -2,10 +2,13 @@
 pub mod tests {
     /// Problem 4: Length of a list
     fn p4_length<T>(xs: &[T]) -> usize {
-        match xs {
-            [] => 0,
-            [_, tail @ ..] => 1 + p4_length(tail),
+        fn length_rec<T>(xs: &[T], len: usize) -> usize {
+            match xs {
+                [] => len,
+                [_, rest @ ..] => length_rec(rest, len + 1),
+            }
         }
+        length_rec(xs, 0)
     }
 
     #[test]
