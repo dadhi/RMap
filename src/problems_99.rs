@@ -3,8 +3,25 @@ pub mod tests {
 
     const EMPTY_I32: &[i32] = &[];
 
+    /// Problem 6: Find out whether a list is a palindrome.
+    fn p6_is_palindrome<T: PartialEq + Eq>(list: &[T]) -> bool {
+        match list {
+            [] | [_] => true,
+            [a, b] | [a, _, b] if a == b => true,
+            _ => false,
+        }
+    }
+
+    #[test]
+    fn test_p6_is_palindrome() {
+        assert!(p6_is_palindrome(&[0, 0]));
+        assert!(p6_is_palindrome(&[1, 2, 1]));
+        // assert!(p6_is_palindrome(&[1, 2, 3, 2, 1]));
+        // assert!(!p6_is_palindrome(&[1, 2, 3, 4, 5]));
+    }
+
     /// Problem 5: Reverse a list
-    fn reverse<T>(xs: &mut [T]) {
+    fn p5_reverse<T>(xs: &mut [T]) {
         match xs {
             [] | [_] => {}
             [a, b] | [a, _, b] => {
@@ -21,9 +38,9 @@ pub mod tests {
     }
 
     #[test]
-    fn test_reverse() {
+    fn test_p5_reverse() {
         let mut xs = [1, 2, 3];
-        reverse(&mut xs);
+        p5_reverse(&mut xs);
         assert_eq!(xs, [3, 2, 1]);
     }
 
