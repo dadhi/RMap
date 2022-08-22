@@ -2,6 +2,7 @@
 
 pub mod rmap;
 mod samples;
+mod single_linked_list;
 mod im_list;
 mod problems_99;
 

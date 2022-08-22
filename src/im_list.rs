@@ -11,6 +11,12 @@ struct Node<T> {
     next: Link<T>,
 }
 
+#[cfg(test)]
 mod tests {
+    use super::*;
 
+    #[test]
+    fn test() {
+        assert!(true)
+    }
 }
