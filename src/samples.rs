@@ -221,7 +221,6 @@ pub mod tests {
 
         rotated = byte.rotate_right(1);
         println!("rotate right by 1: 0b{:08b} -> 0b{:08b}", byte, rotated);
-
     }
 
     struct RNode {
@@ -335,13 +334,21 @@ pub mod tests {
         }
 
         pub fn iter(&self) -> Iter<'_, T> {
-            Iter { next: self.head.as_deref() }
+            Iter {
+                next: self.head.as_deref(),
+            }
+        }
+
+        pub fn iter_mut(&mut self) -> IterMut<'_, T> {
+            IterMut {
+                next: self.head.as_deref_mut(),
+            }
         }
     }
 
     pub struct IntoIter<T>(Stack<T>);
 
-    impl<T> Iterator<> for IntoIter<T> {
+    impl<T> Iterator for IntoIter<T> {
         type Item = T;
         fn next(&mut self) -> Option<Self::Item> {
             self.0.pop()
@@ -354,7 +361,7 @@ pub mod tests {
 
     impl<'a, T> Iterator for Iter<'a, T> {
         type Item = &'a T;
-    
+
         fn next(&mut self) -> Option<Self::Item> {
             self.next.map(|node| {
                 self.next = node.next.as_deref();
@@ -363,13 +370,41 @@ pub mod tests {
         }
     }
 
+    pub struct IterMut<'a, T> {
+        next: Option<&'a mut StackNode<T>>,
+    }
+
+    impl<'a, T> Iterator for IterMut<'a, T> {
+        type Item = &'a mut T;
+
+        fn next(&mut self) -> Option<Self::Item> {
+            self.next.take().map(|node| {
+                self.next = node.next.as_deref_mut();
+                &mut node.elem
+            })
+        }
+    }
+
+    #[test]
+    fn iter_mut() {
+        let mut list = Stack::new();
+        list.push(1);
+        list.push(2);
+        list.push(3);
+
+        let mut iter = list.iter_mut();
+        assert_eq!(iter.next(), Some(&mut 3));
+        assert_eq!(iter.next(), Some(&mut 2));
+        assert_eq!(iter.next(), Some(&mut 1));
+    }
+
     #[test]
     fn iter() {
         let mut list = Stack::new();
-        list.push(1); 
-        list.push(2); 
+        list.push(1);
+        list.push(2);
         list.push(3);
-    
+
         let mut iter = list.iter();
         assert_eq!(iter.next(), Some(&3));
         assert_eq!(iter.next(), Some(&2));
@@ -418,5 +453,4 @@ pub mod tests {
         assert_eq!(Some(42), res);
         assert_eq!(Some(&43), s.peek());
     }
-
 }
