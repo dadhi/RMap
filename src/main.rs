@@ -5,6 +5,7 @@ mod samples;
 mod single_linked_list;
 mod im_list;
 mod problems_99;
+mod double_deq;
 
 use crate::rmap::RMap;
 
