@@ -18,9 +18,13 @@ impl<T> ImList<T> {
 
     pub fn prepend(&self, elem: T) -> Self {
         Self { head: Some(Rc::new(Node {
-            elem: elem,
+            elem,
             next: self.head.clone(),
         }))}
+    }
+
+    pub fn tail(&self) -> Self {
+        Self { head: self.head.as_ref().and_then(|node| node.next.clone()) }
     }
 }
 
@@ -29,7 +33,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test() {
-        assert!(true)
+    fn test_prepend() {
+        let list = ImList::new();
+        let list = list.prepend(1);
+        let list = list.prepend(2);
+        let list = list.prepend(3);
+        assert_eq!(list.head.as_ref().unwrap().elem, 3);
+        assert_eq!(list.tail().head.as_ref().unwrap().elem, 2);
+        assert_eq!(list.tail().tail().head.as_ref().unwrap().elem, 1);
     }
 }
