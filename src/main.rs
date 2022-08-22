@@ -2,6 +2,7 @@
 
 pub mod rmap;
 mod samples;
+mod im_list;
 mod problems_99;
 
 use crate::rmap::RMap;
