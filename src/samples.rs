@@ -333,6 +333,10 @@ pub mod tests {
         pub fn into_iter(self) -> IntoIter<T> {
             IntoIter(self)
         }
+
+        pub fn iter(&self) -> Iter<'_, T> {
+            Iter { next: self.head.as_deref() }
+        }
     }
 
     pub struct IntoIter<T>(Stack<T>);
@@ -342,6 +346,47 @@ pub mod tests {
         fn next(&mut self) -> Option<Self::Item> {
             self.0.pop()
         }
+    }
+
+    pub struct Iter<'a, T> {
+        next: Option<&'a StackNode<T>>,
+    }
+
+    impl<'a, T> Iterator for Iter<'a, T> {
+        type Item = &'a T;
+    
+        fn next(&mut self) -> Option<Self::Item> {
+            self.next.map(|node| {
+                self.next = node.next.as_deref();
+                &node.elem
+            })
+        }
+    }
+
+    #[test]
+    fn iter() {
+        let mut list = Stack::new();
+        list.push(1); 
+        list.push(2); 
+        list.push(3);
+    
+        let mut iter = list.iter();
+        assert_eq!(iter.next(), Some(&3));
+        assert_eq!(iter.next(), Some(&2));
+        assert_eq!(iter.next(), Some(&1));
+    }
+
+    #[test]
+    fn test_into_iter_as_it_is_basically_reverse() {
+        let mut s = Stack::<i32>::new();
+        s.push(1);
+        s.push(2);
+        s.push(3);
+        s.push(4);
+
+        let vec = s.into_iter().map(|x| x + 1).collect::<Vec<_>>();
+
+        assert_eq!(vec![5, 4, 3, 2], vec);
     }
 
     #[test]
@@ -374,17 +419,4 @@ pub mod tests {
         assert_eq!(Some(&43), s.peek());
     }
 
-    //test into_iter
-    #[test]
-    fn test_into_iter_as_it_is_basically_reverse() {
-        let mut s = Stack::<i32>::new();
-        s.push(1);
-        s.push(2);
-        s.push(3);
-        s.push(4);
-
-        let vec = s.into_iter().map(|x| x + 1).collect::<Vec<_>>();
-
-        assert_eq!(vec![5, 4, 3, 2], vec);
-    }
 }
