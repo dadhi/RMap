@@ -1,3 +1,6 @@
+// following this tutorial
+// https://rust-unofficial.github.io/too-many-lists/third.html
+
 use std::rc::Rc;
 
 pub struct ImList<T> {

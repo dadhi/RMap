@@ -1,3 +1,8 @@
+// following this tutorial
+// following this tutorial
+// https://rust-unofficial.github.io/too-many-lists/second.html
+
+
 // ## Stack as a mutable linked list implementation
 // Omg, null pointer optimizing enum - basically Empty case is represented as 0 without need for tag,
 // because the only other case is always not null, because it contains a non-zero pointer.
