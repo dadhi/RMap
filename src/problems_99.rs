@@ -1,14 +1,48 @@
 #[cfg(test)]
 pub mod tests {
+    use std::ops::Deref;
 
-    const EMPTY_I32: &[i32] = &[];
+
+    /// Problem 7: Flatten a nested list structure.
+    fn p_flatten_list<T>(list: &Vec<NestedList<T>>) -> Vec<&T> {
+        fn flatten_list_rec<'a, T>(list: &'a Vec<NestedList<T>>, res: &mut Vec<&'a T>) {
+            for item in list {
+                match item {
+                    NestedList::Elem(i) => res.push(i),
+                    NestedList::List(l) => flatten_list_rec(l, res),
+                }
+            }
+        }
+        let mut result = Vec::new();
+        flatten_list_rec(list, &mut result);
+        result
+    }
+
+    #[derive(Debug, PartialEq)]
+    enum NestedList<T> {
+        Elem(T),
+        List(Vec<NestedList<T>>),
+    }
+
+    #[test]
+    fn p7_test() {
+        let list = vec![
+            NestedList::Elem(1),
+            NestedList::List(vec![
+                NestedList::Elem(2),
+                NestedList::List(vec![NestedList::Elem(3), NestedList::Elem(4)]),
+                NestedList::Elem(5),
+            ]),
+        ];
+        assert_eq!(p_flatten_list(&list), vec![&1, &2, &3, &4, &5]);
+    }
 
     /// Problem 6: Find out whether a list is a palindrome.
     fn p6_is_palindrome<T: PartialEq + Eq>(list: &[T]) -> bool {
         match list {
             [] | [_] => true,
             [a, b] | [a, _, b] if a == b => true,
-            [a, mid @ .., b ] => a == b && p6_is_palindrome(mid),
+            [a, mid @ .., b] => a == b && p6_is_palindrome(mid),
         }
     }
 
@@ -110,4 +144,6 @@ pub mod tests {
         assert_eq!(p2_last(&[1]), Some(&1));
         assert_eq!(p2_last(EMPTY_I32), None);
     }
+
+    const EMPTY_I32: &[i32] = &[];
 }
