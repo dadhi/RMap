@@ -8,7 +8,7 @@ pub mod tests {
         match list {
             [] | [_] => true,
             [a, b] | [a, _, b] if a == b => true,
-            _ => false,
+            [a, mid @ .., b ] => a == b && p6_is_palindrome(mid),
         }
     }
 
@@ -16,8 +16,8 @@ pub mod tests {
     fn test_p6_is_palindrome() {
         assert!(p6_is_palindrome(&[0, 0]));
         assert!(p6_is_palindrome(&[1, 2, 1]));
-        // assert!(p6_is_palindrome(&[1, 2, 3, 2, 1]));
-        // assert!(!p6_is_palindrome(&[1, 2, 3, 4, 5]));
+        assert!(p6_is_palindrome(&[1, 2, 3, 2, 1]));
+        assert!(!p6_is_palindrome(&[1, 2, 3, 4, 5]));
     }
 
     /// Problem 5: Reverse a list
