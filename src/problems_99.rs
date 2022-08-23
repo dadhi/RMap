@@ -1,5 +1,17 @@
 #[cfg(test)]
 pub mod tests {
+    /// Problem 8: Eliminate duplicates from a list
+    fn p_remove_duplicates<T: PartialEq>(list: Vec<T>) -> Vec<T> {
+        let mut result = Vec::new();
+        for item in list {
+            if !result.contains(&item) {
+                result.push(item);
+            }
+        }
+        result
+    }
+
+
     /// Problem 7: Flatten a nested list structure.
     fn p_flatten_list<T>(list: &Vec<NestedList<T>>) -> Vec<&T> {
         fn flatten_list_rec<'a, T>(list: &'a Vec<NestedList<T>>, res: &mut Vec<&'a T>) {
