@@ -1,8 +1,5 @@
 #[cfg(test)]
 pub mod tests {
-    use std::ops::Deref;
-
-
     /// Problem 7: Flatten a nested list structure.
     fn p_flatten_list<T>(list: &Vec<NestedList<T>>) -> Vec<&T> {
         fn flatten_list_rec<'a, T>(list: &'a Vec<NestedList<T>>, res: &mut Vec<&'a T>) {
