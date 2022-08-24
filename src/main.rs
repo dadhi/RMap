@@ -1,11 +1,11 @@
 #![allow(unused)]
 
+mod double_deq;
+mod im_list;
+mod problems_99;
 pub mod rmap;
 mod samples;
 mod single_linked_list;
-mod im_list;
-mod problems_99;
-mod double_deq;
 
 use crate::rmap::RMap;
 
@@ -13,7 +13,7 @@ fn main() {
     rule_110();
 }
 
-use std::io::{self, Write, Result};
+use std::io::{self, Result, Write};
 
 fn rule_110() -> Result<()> {
     let stdout = io::stdout();
@@ -22,7 +22,7 @@ fn rule_110() -> Result<()> {
     const SYMBOLS: [&[u8; 1]; 2] = [b"-", b"#"];
     const SYMBOLS_01: [&[u8; 2]; 4] = [b"--", b"-#", b"#-", b"##"];
     const DIGITS: [u8; 10] = [b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9'];
-    
+
     stdout.write(b"## RULE-110 premier. 110 in binary representation is 01101110:\n");
 
     let mut cells: usize = 1 << 31; // init the last cell with 1
@@ -49,7 +49,6 @@ fn rule_110() -> Result<()> {
                 cells &= !(1 << (i - 1));
                 // get pattern's bit in 110 (in its binary form 0b_0110_1110) and set to it the i - 1 bit in cells
                 cells |= ((110 >> pattern) & 1) << (i - 1);
-
             }
 
             stdout.write(b"\n")?;

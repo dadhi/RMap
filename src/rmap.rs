@@ -2,7 +2,6 @@
 
 #![allow(dead_code)]
 
-
 #[derive(Debug)]
 pub struct RMap<T> {
     hash: i32,
@@ -21,7 +20,7 @@ impl<T: Clone> RMap<T> {
         }
     }
 
-    pub fn add(&mut self, h:i32, v: T) {
+    pub fn add(&mut self, h: i32, v: T) {
         if self.hash == h {
             return;
         };
@@ -41,9 +40,7 @@ impl<T: Clone> RMap<T> {
     pub fn get_value(&self, h: i32) -> Option<T> {
         if h == self.hash {
             Some(self.value.clone()) // todo: @wip avoid clone
-        }
-
-        else if h < self.hash {
+        } else if h < self.hash {
             self.left.as_ref()?.get_value(h)
         } else if h > self.hash {
             self.right.as_ref()?.get_value(h)

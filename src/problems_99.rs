@@ -11,6 +11,17 @@ pub mod tests {
         result
     }
 
+    #[test]
+    fn test_p_remove_duplicates() {
+        let list = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let expected = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let actual = p_remove_duplicates(list);
+        assert_eq!(expected, actual);
+
+        let list = vec!["a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e"];
+        let expected = vec!["a"; "b"; "c"; "a"; "d"; "e"];
+        assert_eq!(expected, p_remove_duplicates(list));
+    }
 
     /// Problem 7: Flatten a nested list structure.
     fn p_flatten_list<T>(list: &Vec<NestedList<T>>) -> Vec<&T> {

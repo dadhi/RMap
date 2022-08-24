@@ -283,5 +283,4 @@ pub mod tests {
 
         assert_eq!(vec![4, 2, 5, 1, 6, 3, 7], preorder_traverse(&root));
     }
-
 }
