@@ -79,9 +79,26 @@ impl<T> Deq<T> {
     }
 }
 
+impl<T> Drop for Deq<T> {
+    fn drop(&mut self) {
+        while self.pop_front().is_some() {}
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_drop() {
+        {
+            let mut deq = Deq::new();
+            deq.push_front(1);
+            deq.push_front(2);
+            deq.push_front(3);
+            deq.push_front(61);
+        }
+    }
 
     #[test]
     fn basics() {
