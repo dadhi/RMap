@@ -30,8 +30,14 @@ pub mod tests {
         assert_eq!(pack(&[1, 1, 2, 3]), vec![vec![&1, &1], vec![&2], vec![&3]]);
         assert_eq!(pack(&[1, 2, 2, 3]), vec![vec![&1], vec![&2, &2], vec![&3]]);
         assert_eq!(pack(&[1, 2, 3, 3]), vec![vec![&1], vec![&2], vec![&3, &3]]);
-        assert_eq!(pack(&[1, 1, 2, 2, 3, 3]), vec![vec![&1, &1], vec![&2, &2], vec![&3, &3]]);
-        assert_eq!(pack(&[1, 1, 1, 2, 2, 2, 3, 3, 3]), vec![vec![&1, &1, &1], vec![&2, &2, &2], vec![&3, &3, &3]]);
+        assert_eq!(
+            pack(&[1, 1, 2, 2, 3, 3]),
+            vec![vec![&1, &1], vec![&2, &2], vec![&3, &3]]
+        );
+        assert_eq!(
+            pack(&[1, 1, 1, 2, 2, 2, 3, 3, 3]),
+            vec![vec![&1, &1, &1], vec![&2, &2, &2], vec![&3, &3, &3]]
+        );
     }
 
     /// Problem 8: Eliminate duplicates from a list

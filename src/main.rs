@@ -1,6 +1,6 @@
 #![allow(unused)]
 
-mod double_deq;
+mod deq;
 mod im_list;
 mod problems_99;
 pub mod rmap;
