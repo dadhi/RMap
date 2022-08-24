@@ -81,5 +81,34 @@ impl<T> Deq<T> {
 
 #[cfg(test)]
 mod tests {
-    // todo: add tests
+    use super::*;
+
+    #[test]
+    fn basics() {
+        let mut deq = Deq::new();
+
+        // Check empty list behaves right
+        assert_eq!(deq.pop_front(), None);
+
+        // Populate list
+        deq.push_front(1);
+        deq.push_front(2);
+        deq.push_front(3);
+
+        // Check normal removal
+        assert_eq!(deq.pop_front(), Some(3));
+        assert_eq!(deq.pop_front(), Some(2));
+
+        // Push some more just to make sure nothing's corrupted
+        deq.push_front(4);
+        deq.push_front(5);
+
+        // Check normal removal
+        assert_eq!(deq.pop_front(), Some(5));
+        assert_eq!(deq.pop_front(), Some(4));
+
+        // Check exhaustion
+        assert_eq!(deq.pop_front(), Some(1));
+        assert_eq!(deq.pop_front(), None);
+    }
 }
