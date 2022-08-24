@@ -1,5 +1,39 @@
 #[cfg(test)]
 pub mod tests {
+    /// Problem 9: Pack consecutive duplicates of list elements into sub-lists.
+    fn pack<T: PartialEq>(list: &[T]) -> Vec<Vec<&T>> {
+        let mut result: Vec<Vec<&T>> = Vec::new();
+        let mut current: Vec<&T> = Vec::new();
+        for item in list {
+            if current.is_empty() || current.last().map_or(false, |&x| x.eq(item)) {
+                current.push(item.clone());
+            } else {
+                result.push(current);
+                current = vec![item.clone()];
+            }
+        }
+        if !current.is_empty() {
+            result.push(current);
+        }
+        result
+    }
+
+    #[test]
+    fn test_p_pack() {
+        assert_eq!(pack(&[1]), vec![vec![&1]]);
+        assert_eq!(pack(&[1, 1]), vec![vec![&1, &1]]);
+        assert_eq!(pack(&[1, 2]), vec![vec![&1], vec![&2]]);
+        assert_eq!(pack(&[1, 1, 2]), vec![vec![&1, &1], vec![&2]]);
+        assert_eq!(pack(&[1, 2, 2]), vec![vec![&1], vec![&2, &2]]);
+        assert_eq!(pack(&[1, 1, 2, 2]), vec![vec![&1, &1], vec![&2, &2]]);
+        assert_eq!(pack(&[1, 2, 3]), vec![vec![&1], vec![&2], vec![&3]]);
+        assert_eq!(pack(&[1, 1, 2, 3]), vec![vec![&1, &1], vec![&2], vec![&3]]);
+        assert_eq!(pack(&[1, 2, 2, 3]), vec![vec![&1], vec![&2, &2], vec![&3]]);
+        assert_eq!(pack(&[1, 2, 3, 3]), vec![vec![&1], vec![&2], vec![&3, &3]]);
+        assert_eq!(pack(&[1, 1, 2, 2, 3, 3]), vec![vec![&1, &1], vec![&2, &2], vec![&3, &3]]);
+        assert_eq!(pack(&[1, 1, 1, 2, 2, 2, 3, 3, 3]), vec![vec![&1, &1, &1], vec![&2, &2, &2], vec![&3, &3, &3]]);
+    }
+
     /// Problem 8: Eliminate duplicates from a list
     fn p_remove_duplicates<T: PartialEq>(list: Vec<T>) -> Vec<T> {
         let mut result = Vec::new();
