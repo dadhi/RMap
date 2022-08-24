@@ -38,14 +38,11 @@ impl<T: Clone> RMap<T> {
     }
 
     pub fn get_value(&self, h: i32) -> Option<T> {
-        if h == self.hash {
-            Some(self.value.clone()) // todo: @wip avoid clone
-        } else if h < self.hash {
-            self.left.as_ref()?.get_value(h)
-        } else if h > self.hash {
-            self.right.as_ref()?.get_value(h)
-        } else {
-            None
+        use std::cmp::Ordering;
+        match h.cmp(&self.hash) {
+            Ordering::Equal => Some(self.value.clone()), // todo: @wip avoid clone
+            Ordering::Greater => self.right.as_ref()?.get_value(h),
+            Ordering::Less => self.left.as_ref()?.get_value(h),
         }
     }
 }

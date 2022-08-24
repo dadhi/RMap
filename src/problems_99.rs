@@ -18,8 +18,10 @@ pub mod tests {
         let actual = p_remove_duplicates(list);
         assert_eq!(expected, actual);
 
-        let list = vec!["a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e"];
-        let expected = vec!["a"; "b"; "c"; "a"; "d"; "e"];
+        let list = vec![
+            "a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e", "e",
+        ];
+        let expected = vec!["a", "b", "c", "a", "d", "e"];
         assert_eq!(expected, p_remove_duplicates(list));
     }
 

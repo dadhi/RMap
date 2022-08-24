@@ -29,19 +29,19 @@ fn rule_110() -> Result<()> {
 
     let mut gen_num: [u8; 3] = [0, 0, b' ']; // the buffer to store and output the generation number
 
-    for d0 in 0..3 {
-        for d1 in 0..10 {
-            (gen_num[0], gen_num[1]) = (DIGITS[d0], DIGITS[d1]);
-            stdout.write(&gen_num)?;
+    for d0 in DIGITS.iter().take(3) {
+        for d1 in DIGITS {
+            (gen_num[0], gen_num[1]) = (*d0, d1);
+            stdout.write_all(&gen_num)?;
 
             // todo: @incomplete check that we don't need to rotate bits
             // let mut pattern = (cells & 3) << 1;
             let mut pattern = ((cells & 1) << 1) | ((cells >> 1) & 1);
 
-            stdout.write(SYMBOLS_01[pattern])?; // todo: @perf funny that we may just replace it with b"--" for 30 gens, cause it is always will be "--"
+            stdout.write_all(SYMBOLS_01[pattern])?; // todo: @perf funny that we may just replace it with b"--" for 30 gens, cause it is always will be "--"
 
             for i in 2..32 {
-                stdout.write(SYMBOLS[(cells >> i) & 1])?;
+                stdout.write_all(SYMBOLS[(cells >> i) & 1])?;
 
                 pattern = (pattern << 1 | ((cells >> i) & 1)) & 0b0000_0111; // keep pattern as 3 lower bits, 000, 001, 010, 011, etc.
 
@@ -51,7 +51,7 @@ fn rule_110() -> Result<()> {
                 cells |= ((110 >> pattern) & 1) << (i - 1);
             }
 
-            stdout.write(b"\n")?;
+            stdout.write_all(b"\n")?;
         }
     }
     stdout.flush()?;
