@@ -17,6 +17,10 @@ samples = []
 [dev-dependencies]
 criterion = "0.3"
 
+[[bin]]
+name = "rule110"
+path = "src/rule110.rs"
+
 [[bench]]
 name = "benchmarks"
 harness = false
