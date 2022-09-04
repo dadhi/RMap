@@ -6,6 +6,7 @@ mod problems_99;
 pub mod rmap;
 mod samples;
 mod single_linked_list;
+mod protest;
 
 use crate::rmap::RMap;
 
