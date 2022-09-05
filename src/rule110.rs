@@ -3,10 +3,10 @@
 mod deq;
 mod im_list;
 mod problems_99;
+mod protest;
 pub mod rmap;
 mod samples;
 mod single_linked_list;
-mod protest;
 
 use crate::rmap::RMap;
 
