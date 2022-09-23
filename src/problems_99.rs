@@ -6,17 +6,17 @@ pub mod tests {
     fn p_pack_rec<T: PartialEq>(list: &[T]) -> Vec<Vec<&T>> {
         fn rec_impl<'a, T: PartialEq>(
             list: &'a [T],
-            current_duplicates: &mut Vec<&'a T>,
+            non_empty_duplicates: &mut Vec<&'a T>,
             result: &mut Vec<Vec<&'a T>>,
         ) {
             match list {
-                [] => result.push(current_duplicates.clone()),
+                [] => result.push(non_empty_duplicates.clone()), // todo: @perf is it possible to avoid cloning?
                 [x, rest @ ..] => {
-                    if x != current_duplicates[current_duplicates.len() - 1] {
-                        result.push(current_duplicates.drain(..).collect());
+                    if x != non_empty_duplicates[non_empty_duplicates.len() - 1] {
+                        result.push(non_empty_duplicates.drain(..).collect());
                     }
-                    current_duplicates.push(x);
-                    rec_impl(rest, current_duplicates, result);
+                    non_empty_duplicates.push(x);
+                    rec_impl(rest, non_empty_duplicates, result);
                 }
             }
         }
