@@ -4,45 +4,31 @@ pub mod tests {
 
     /// Problem 9: Pack consecutive duplicates of list elements into sub-lists.
     fn p_pack_rec<T: PartialEq>(list: &[T]) -> Vec<Vec<&T>> {
-        fn rec_impl<'a, T: PartialEq>(list: &'a [T], current_duplicates: &mut Vec<&'a T>, result: &mut Vec<Vec<&'a T>>) {
+        fn rec_impl<'a, T: PartialEq>(
+            list: &'a [T],
+            current_duplicates: &mut Vec<&'a T>,
+            result: &mut Vec<Vec<&'a T>>,
+        ) {
             match list {
-                [] => {
-                    if !current_duplicates.is_empty() {
-                        result.push(current_duplicates.clone());
-                    }
-                },
-                [x] => {
-                    if !current_duplicates.is_empty() {
-                        if x == current_duplicates[current_duplicates.len() - 1] {
-                            current_duplicates.push(x);
-                            result.push(current_duplicates.clone());
-                        } else {
-                            result.push(current_duplicates.clone());
-                            result.push(vec![x]);
-                        }
-                    } else {
-                        result.push(vec![x]);
-                    }
-                },
+                [] => result.push(current_duplicates.clone()),
                 [x, rest @ ..] => {
-                    if current_duplicates.is_empty() {
-                        current_duplicates.push(x);
-                    }
-                    else if current_duplicates.last().map_or(false, |&last| last == x) {
-                        current_duplicates.push(x);
-                    }
-                    else {
+                    if x != current_duplicates[current_duplicates.len() - 1] {
                         result.push(current_duplicates.drain(..).collect());
-                        current_duplicates.push(x);
                     }
+                    current_duplicates.push(x);
                     rec_impl(rest, current_duplicates, result);
-                },
+                }
             }
         }
-        let mut result = vec![];
-        let mut current_duplicates = vec![];
-        rec_impl(list, &mut current_duplicates, &mut result);
-        result
+
+        if (list.len() == 0) {
+            Vec::<Vec<&T>>::new()
+        } else {
+            let mut result = vec![];
+            let mut non_empty_duplicates = vec![&list[0]];
+            rec_impl(&list[1..], &mut non_empty_duplicates, &mut result);
+            result
+        }
     }
 
     #[test]
