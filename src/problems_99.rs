@@ -2,20 +2,21 @@
 pub mod tests {
     /// Problem 9: Pack consecutive duplicates of list elements into sub-lists.
     fn p_pack<T: PartialEq>(list: &[T]) -> Vec<Vec<&T>> {
-        let mut result: Vec<Vec<&T>> = Vec::new();
-        let mut current: Vec<&T> = Vec::new();
+        let mut list_of_duplicates: Vec<Vec<&T>> = Vec::new();
+        let mut duplicates: Vec<&T> = Vec::new();
         for item in list {
-            if current.is_empty() || current.last().map_or(false, |&x| x.eq(item)) {
-                current.push(item.clone());
+            if duplicates.is_empty() || duplicates.last().map_or(false, |&x| x.eq(item)) {
+                duplicates.push(item.clone());
             } else {
-                result.push(current);
-                current = vec![item.clone()];
+                list_of_duplicates.push(duplicates);
+                duplicates = vec![item.clone()];
             }
         }
-        if !current.is_empty() {
-            result.push(current);
+        // add the last duplicates
+        if !duplicates.is_empty() {
+            list_of_duplicates.push(duplicates);
         }
-        result
+        list_of_duplicates
     }
 
     #[test]
