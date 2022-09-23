@@ -2,8 +2,8 @@
 
 mod deq;
 mod im_list;
-mod problems_99;
-mod protest;
+mod problems_99; // todo: @wip remove it - workspaces?
+mod protest;     // todo: @wip remove it - workspaces?
 pub mod rmap;
 mod samples;
 mod single_linked_list;
@@ -59,6 +59,7 @@ fn rule_110() -> Result<()> {
     Ok(())
 }
 
+// todo: @wip move out
 fn play_with_rmap() {
     let mut m1 = RMap::new(5, String::from("foo"));
     m1.add(7, String::from("bar"));
