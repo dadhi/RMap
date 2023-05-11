@@ -1,6 +1,8 @@
 #[cfg(test)]
 pub mod tests {
-    use std::ops::Deref;
+
+    /// Bonus 1: Count the swaps required to sort a list of continuous integers.
+    
 
     /// Problem 9: Pack consecutive duplicates of list elements into sub-lists.
     fn p_pack_rec<T: PartialEq>(list: &[T]) -> Vec<Vec<&T>> {
