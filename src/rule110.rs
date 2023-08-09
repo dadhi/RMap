@@ -3,7 +3,7 @@
 mod deq;
 mod im_list;
 mod problems_99; // todo: @wip remove it - workspaces?
-mod protest;     // todo: @wip remove it - workspaces?
+mod protest; // todo: @wip remove it - workspaces?
 pub mod rmap;
 mod samples;
 mod single_linked_list;
