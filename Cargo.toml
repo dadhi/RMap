@@ -15,7 +15,7 @@ samples = []
 # futures = "0.3"
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.5.1"
 
 [[bin]]
 name = "rule110"
