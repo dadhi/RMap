@@ -232,7 +232,7 @@ pub mod tests {
     impl RNode {
         fn new_leaf(val: i32) -> Self {
             RNode {
-                val: val,
+                val,
                 left: Box::new(None),
                 right: Box::new(None),
             }
@@ -240,7 +240,7 @@ pub mod tests {
 
         fn new_tree(val: i32, left: Option<RNode>, right: Option<RNode>) -> Self {
             RNode {
-                val: val,
+                val,
                 left: Box::new(left),
                 right: Box::new(right),
             }
@@ -269,14 +269,14 @@ pub mod tests {
 
         assert_eq!(vec![2, 1, 3], preorder_traverse(&root));
 
-        if let Some(ref mut rl) = root.left.as_mut() {
+        if let Some(rl) = root.left.as_mut() {
             rl.left = Box::new(Some(RNode::new_leaf(4)));
             rl.right = Box::new(Some(RNode::new_leaf(5)));
         }
 
         assert_eq!(vec![4, 2, 5, 1, 3], preorder_traverse(&root));
 
-        for rr in root.right.as_mut().as_mut() {
+        if let Some(rr) = root.right.as_mut() {
             rr.left = Box::new(Some(RNode::new_leaf(6)));
             rr.right = Box::new(Some(RNode::new_leaf(7)));
         }
