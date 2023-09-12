@@ -11,10 +11,14 @@ mod single_linked_list;
 use crate::rmap::RMap;
 
 fn main() {
-    rule_110();
+    play_with_rmap();
+    // rule_110();
 }
 
-use std::io::{self, Result, Write};
+use std::{
+    io::{self, Result, Write},
+    rc::Rc,
+};
 
 fn rule_110() -> Result<()> {
     let stdout = io::stdout();
@@ -61,13 +65,14 @@ fn rule_110() -> Result<()> {
 
 // todo: @wip move out
 fn play_with_rmap() {
-    let mut m1 = RMap::new(5, String::from("foo"));
-    m1.add(7, String::from("bar"));
-    m1.add(3, String::from("baz"));
+    type StrKey = Rc<&'static str>;
+    let mut m1 = RMap::new(5, StrKey::from("foo"));
+    m1.add(7, StrKey::from("bar"));
+    m1.add(3, StrKey::from("baz"));
     println!("{:#?}", m1);
-    let mut m2 = RMap::new(3, String::from("ay"));
-    m2.add(5, String::from("all"));
-    m2.add(1, String::from("bell"));
+    let mut m2 = RMap::new(3, StrKey::from("ay"));
+    m2.add(5, StrKey::from("all"));
+    m2.add(1, StrKey::from("bell"));
     println!("{:#?}", m2);
     let res = m2.get_value(1);
     println!("{:#?}", res);
